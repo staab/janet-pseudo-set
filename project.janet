@@ -3,4 +3,4 @@
  :description "A set library for Janet")
 
 (declare-source
-  :source ["staab"])
+  :source ["staab.pseudo-set"])
