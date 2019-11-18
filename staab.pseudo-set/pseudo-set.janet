@@ -1,23 +1,21 @@
-(defn- build-t [xs v &opt t]
-  (default t @{})
-  (each x xs (put t x v))
-  t)
+# Utils
 
-(defn create [& xs]
-  (let [t (build-t xs true)]
-    (defn pseudo-set [] t)))
+(defn- wrap [m] (fn pseudo-set [] m))
+(defn- fill [ks] (let [a @[]] (each k ks (array/push a k) (array/push a true)) a))
 
-(defn members [s] (keys (s)))
+# Public api
+
+(defn create [& xs] (wrap (struct ;(fill xs))))
+(defn members [s] (tuple ;(keys (s))))
 (defn member? [s x] (true? ((s) x)))
-(defn equal? [s t] (deep= (s) (t)))
-(defn clone [s] (create ;(members s)))
-(defn add [s & xs] (let [t (clone s)] (build-t xs true (t)) t))
-(defn union [s t] (add s ;(members t)))
-(defn remove [s & xs] (let [t (clone s)] (build-t xs nil (t)) t))
-(defn diff [s t] (remove s ;(members t)))
-(defn intersect [s t] (create ;(filter |(member? s $) (members t))))
+(defn equal? [s t] (= (s) (t)))
+(defn add [s & xs] (wrap (struct ;(kvs (s)) ;(fill xs))))
+(defn union [s t] (add s ;(keys (t))))
+(defn diff [s t] (wrap (struct ;(fill (filter |(not (member? t $)) (keys (s)))))))
+(defn remove [s & xs] (diff s (create ;xs)))
+(defn intersect [s t] (create ;(filter |(member? s $) (keys (t)))))
 
 (defn symdiff [s t]
   (create
-   ;(filter |(not (member? s $)) (members t))
-   ;(filter |(not (member? t $)) (members s))))
+   ;(filter |(not (member? s $)) (keys (t)))
+   ;(filter |(not (member? t $)) (keys (s)))))

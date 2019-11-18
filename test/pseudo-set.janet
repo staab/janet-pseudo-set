@@ -9,7 +9,7 @@
 (defn check-members [s f & args]
   (set/members (check-copy s f ;args)))
 
-(assert-deep= @[1 2 3] (set/members (set/create 1 2 3)))
+(assert= [3 2 1] (set/members (set/create 1 2 3)))
 (assert= true (set/member? (set/create 1 2 3) 3))
 (assert= false (set/member? (set/create 1 2 3) :a))
 
@@ -21,14 +21,9 @@
  (not (set/equal? (set/create 1 2 3 4) (set/create 1 2 3)))
  "Non-equivalent sets are equal")
 
-(let [s (set/create 1 2 3)]
-  (assert
-   (set/equal? (check-copy s set/clone) s)
-   "Clone created non-equal sets"))
-
-(assert-deep= @[1 2 3 :a :b] (check-members (set/create 1 2 3) set/add :a :b))
-(assert-deep= @[1 2 3 :a :b] (check-members (set/create 1 2 3) set/union (set/create :a :b)))
-(assert-deep= @[2] (check-members (set/create 1 2 3) set/remove 1 3))
-(assert-deep= @[2] (check-members (set/create 1 2 3) set/diff (set/create 1 3)))
-(assert-deep= @[1 3] (check-members (set/create 1 2 3) set/intersect (set/create 1 3 :a)))
-(assert-deep= @[2 :a] (check-members (set/create 1 2 3) set/symdiff (set/create 1 3 :a)))
+(assert= [3 2 1 :a :b] (check-members (set/create 1 2 3) set/add :a :b))
+(assert= [3 2 1 :a :b] (check-members (set/create 1 2 3) set/union (set/create :a :b)))
+(assert= [2] (check-members (set/create 1 2 3) set/remove 1 3))
+(assert= [2] (check-members (set/create 1 2 3) set/diff (set/create 1 3)))
+(assert= [3 1] (check-members (set/create 1 2 3) set/intersect (set/create 1 3 :a)))
+(assert= [2 :a] (check-members (set/create 1 2 3) set/symdiff (set/create 1 3 :a)))
