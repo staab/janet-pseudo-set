@@ -1,5 +1,5 @@
-(use staab.assert/assert)
-(import staab.pseudo-set/pseudo-set :as set)
+(use assert)
+(import pseudo-set :as set)
 
 (defn check-copy [s f & args]
   (let [s2 (f s ;args)]
@@ -21,8 +21,8 @@
  (not (set/equal? (set/create 1 2 3 4) (set/create 1 2 3)))
  "Non-equivalent sets are equal")
 
-(assert= [3 2 1 :a :b] (check-members (set/create 1 2 3) set/add :a :b))
-(assert= [3 2 1 :a :b] (check-members (set/create 1 2 3) set/union (set/create :a :b)))
+(assert= [3 2 1 :b :a] (check-members (set/create 1 2 3) set/add :a :b))
+(assert= [3 2 1 :b :a] (check-members (set/create 1 2 3) set/union (set/create :a :b)))
 (assert= [2] (check-members (set/create 1 2 3) set/remove 1 3))
 (assert= [2] (check-members (set/create 1 2 3) set/diff (set/create 1 3)))
 (assert= [3 1] (check-members (set/create 1 2 3) set/intersect (set/create 1 3 :a)))
