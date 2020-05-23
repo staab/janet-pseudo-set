@@ -1,5 +1,5 @@
 (use assert)
-(import pseudo-set :as set)
+(import set)
 
 (defn check-copy [s f & args]
   (let [s2 (f s ;args)]
@@ -9,7 +9,7 @@
 (defn check-members [s f & args]
   (set/members (check-copy s f ;args)))
 
-(assert= [3 2 1] (set/members (set/create 1 2 3)))
+(assert-deep= @[1 2 3] (set/members (set/create 1 2 3)))
 (assert= true (set/member? (set/create 1 2 3) 3))
 (assert= false (set/member? (set/create 1 2 3) :a))
 

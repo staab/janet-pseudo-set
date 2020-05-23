@@ -1,7 +1,11 @@
 (declare-project
- :name "janet-pseudo-set"
+ :name "janet-set"
  :description "A set library for Janet"
- :dependencies ["https://github.com/staab/janet-assert.git"])
+ :dependencies [])
+
+(declare-native
+  :name "_set"
+  :source ["set.c"])
 
 (declare-source
-  :source ["pseudo-set.janet"])
+  :source ["set.janet"])
